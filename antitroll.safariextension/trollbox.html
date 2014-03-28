@@ -1,0 +1,50 @@
+<html>
+<head>
+<style>
+body{text-align:center;}
+#trollbox{width:170px; height:230px; margin:5px; text-align:left;}
+#toolbar{height:30px; margin-top:5px;}
+#buttoncancel{float:left;}
+#buttonsave{float:right;}
+</style>
+</head>
+<body>
+    <textarea id="trollbox" spellcheck="false"></textarea>
+    <div id="toolbar">
+    	<button id="buttoncancel">Cancel</button>
+    	<button id="buttonsave">Save</button>
+    </div>
+</body>
+
+<script>
+// Troll box
+var textArea     = document.getElementById("trollbox");
+var buttonSave   = document.getElementById("buttonsave");
+var buttonCancel = document.getElementById("buttoncancel");
+var globals      = safari.extension.globalPage.contentWindow;  // globals.loadTrolls()
+var popup;
+
+safari.application.addEventListener("popover", onShow, true);
+
+function onShow(event) {
+	popup      = event.target;
+	var names  = globals.loadTrolls();
+	var trolls = names.split(",").join("\n");
+	textArea.value = trolls;
+	textArea.focus();
+}
+
+buttonSave.addEventListener('click', function onClick(event) {
+    var text   = textArea.value.trim();
+    var trolls = text.replace(/(\r\n|\n|\r)/gm,",").toLowerCase();
+    trolls     = trolls.split(',').sort().join(',');
+    globals.saveTrolls(trolls);
+    if(popup){ popup.hide(); }
+}, false);
+
+buttonCancel.addEventListener('click', function onClick(event) {
+    if(popup){ popup.hide(); }
+}, false);
+</script>
+
+</html>

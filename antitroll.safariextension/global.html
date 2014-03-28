@@ -1,0 +1,42 @@
+<html>
+<body>
+<script>
+console.log("GLOBAL--------------------");
+// Set up the Listener
+safari.application.addEventListener("command", performCommand, false);
+safari.application.addEventListener("message", processMessage, false);
+
+// Function to perform when event is received
+// Uses event.command and event.message as data
+function performCommand(event) {
+    if(event.command == "antitroll") {
+        // show popup
+    }
+}
+
+// Function to perform when message is received
+// Uses event.name and event.message as data
+function processMessage(event) {
+    console.log("EVENT: "+event.name);
+    if(event.name == "load-trolls") {
+        var trolls = loadTrolls();
+        event.target.page.dispatchMessage("trolls-list", trolls);
+    }
+}
+
+
+function loadTrolls(){
+	if(!safari.extension.settings.trolls){
+		safari.extension.settings.trolls = "anel,cindy nero,cirilo gonzalez,dina,drogba,el pemon,ladi llin,redkidneybeans,ruben rivero,sherk";
+	}
+    console.log("TROLLS: "+safari.extension.settings.trolls);
+	return safari.extension.settings.trolls;
+}
+
+function saveTrolls(trolls){
+	safari.extension.settings.trolls = trolls;
+}
+
+</script>
+</body>
+</html>

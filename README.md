@@ -1,4 +1,4 @@
-antitroll-safari
+Antitroll-safari
 ================
 
 Antitroll extension for Safari
